@@ -22,7 +22,7 @@ public class LionParameterizedTest {
     }
 
     // Метод возвращающий данные для параметризованных тестов
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name="Тестовые данные: {0} {1}")
     public static Object[][] getData() {
         return new Object[][]{
                 {"Самец", true},  // Для самца ожидается наличие гривы

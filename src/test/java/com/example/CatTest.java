@@ -25,7 +25,7 @@ public class CatTest extends TestCase {
     public void testGetSound() {
         String actual = cat.getSound();
 
-        assertEquals("Мяу", actual);
+        assertEquals("Кот должен говорить мяу","Мяу", actual);
     }
 
     @Test
