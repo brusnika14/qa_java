@@ -1,24 +1,27 @@
 package com.example;
 
-import com.example.Feline;
-import com.example.Lion;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LionTest {
+    @Spy
+
     private Feline feline;
     private Lion lion;
 
     @Before
     public void setUp() throws Exception {
         // Создали мок объект Feline
-        feline = Mockito.mock(Feline.class);
+        //feline = mock(Feline.class);
         // Создали экземпляра Lion с мок объектом Feline
         lion = new Lion("Самец", feline);
     }
@@ -31,23 +34,27 @@ public class LionTest {
 
     @Test
     public void testGetKittens() {
-        // Мок объекта: когда вызывается метод getKittens(), возвращать 2
-        Mockito.when(feline.getKittens()).thenReturn(2);
-
-        // Проверяем что метод getKittens() класса Lion возвращает 2
-        assertEquals(2, lion.getKittens());
+        // По умолчанию spy вызывает реальный метод, который возвращает 1
+        assertEquals(1, lion.getKittens());
     }
 
     @Test
-    public void testGetFood() throws Exception {
-        // Мок объекта: когда вызывается метод getFood("Хищник"), возвращать список с "Мясо"
-        Mockito.when(feline.getFood("Хищник")).thenReturn(List.of("Мясо"));
+    public void testGetFoodReturnsCorrectPredatorFood() throws Exception {
+        // Arrange
+        Feline feline = mock(Feline.class);
+        Lion lion = new Lion("Самец", feline);
 
-        // Получаем результат работы метода getFood() класса Lion, проверяем его
+        // Настраиваем мок для возврата реального списка еды хищника
+        when(feline.getFood("Хищник")).thenReturn(List.of("Животные", "Птицы", "Рыба"));
+
+        // Act
         List<String> food = lion.getFood();
-        assertEquals(List.of("Мясо"), food);
-    }
 
+        // Assert
+        assertEquals("Должен вернуться корректный список еды для хищника",
+                List.of("Животные", "Птицы", "Рыба"),
+                food);
+    }
     @Test
     public void shouldThrowExceptionForInvalidSex() {
         Feline feline = new Feline();
